@@ -47,7 +47,8 @@ h1 {
 }
 .todo {
     display: flex;
-    align-items: center;
+    flex-direction: column; /* stack row + subtasks vertically */
+    align-items: flex-start;
     padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
 }
@@ -60,16 +61,42 @@ h1 {
 .todo .text {
     flex: 1;
 }
+.todo .subtask{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 .todo .subtask-btn {
-    margin-left: auto;
+    margin-left: 3rem;
     margin-right: 0.5rem;
     font-size: 1.2rem;
     cursor: pointer;
+    background: none;
+    border: none;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+}
+.todo .subtask-btn:hover {
+    color: #0056b3;
 }
 .todo .delete {
     cursor: pointer;
     color: #e00;
+    background: none;
+    border: none;
+    margin-left: 0.25rem;
 }
 .subtask {
-    margin-left: 2rem;
+    margin-left: 2rem; /* indentation */
+}
+.todo.completed .text {
+    text-decoration: line-through;
+    color: #999;
+}
+/* Row wrapper for main task elements */
+.todo .row {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
