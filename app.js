@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <input type="checkbox" ${todo.completed ? "checked" : ""}>
           <span class="text">${todo.text}</span>
           ${!isSub ? '<button class="subtask-btn">+</button>' : ""}
-          <button class="delete">X</button>
+          <button class="delete">x</button>
       </div>
     `;
 
