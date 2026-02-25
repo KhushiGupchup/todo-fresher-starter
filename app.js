@@ -1,112 +1,111 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Load todos from localStorage or start with an empty array
+  // get saved tasks if they exist
   let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-  // Grab DOM elements
+ 
   const listEl = document.getElementById("todo-list");
   const inputEl = document.getElementById("new-todo");
   const filterButtons = document.querySelectorAll(".filters button");
 
-  // Set current filter from URL hash or default to "all"
+  // default filter from URL or show all
   let currentFilter = window.location.hash.replace("#", "") || "all";
-  let draggedId = null; // track which todo is being dragged
+  let draggedId = null; // stores which task is being dragged
 
-  // Save todos array to localStorage
-  function saveTodos() {
+  // save tasks in browser storage
+  function saveTasks() {
     localStorage.setItem("todos", JSON.stringify(todos));
   }
 
-  // Add a new todo (or subtask if parentId is provided)
-  function addTodo(text, parentId = null) {
+  // add new task (or subtask)
+  function addTask(text, parentId = null) {
     todos.push({
-      id: Date.now().toString(), // unique id
+      id: Date.now().toString(), // simple unique id
       text,
       completed: false,
       parentId
     });
-    saveTodos();
-    render(); // update the UI
+
+    saveTasks();
+    renderTasks(); // refresh list
   }
 
-  // Add todo when Enter is pressed in input field
+  // add task when pressing Enter
   inputEl.addEventListener("keydown", e => {
     if (e.key === "Enter" && inputEl.value.trim()) {
-      addTodo(inputEl.value.trim());
-      inputEl.value = ""; // clear input after adding
+      addTask(inputEl.value.trim());
+      inputEl.value = ""; // clear input
     }
   });
 
-  // Delete a todo (and its subtasks if any)
-  function deleteTodo(id) {
+  // delete task and its subtasks
+  function deleteTask(id) {
     todos = todos.filter(t => t.id !== id && t.parentId !== id);
-    saveTodos();
-    render();
+    saveTasks();
+    renderTasks();
   }
 
-  // Toggle the completed state of a todo
-  function toggleComplete(id) {
+  // mark task done / undone
+  function toggleTask(id) {
     const todo = todos.find(t => t.id === id);
     if (!todo) return;
 
     todo.completed = !todo.completed;
-    saveTodos();
-    render();
+    saveTasks();
+    renderTasks();
   }
 
-  // Change the current filter and update active button
-  function setFilter(filter) {
+  // change filter (all / active / completed)
+  function setTaskFilter(filter) {
     currentFilter = filter;
-    window.location.hash = filter; // update URL
+    window.location.hash = filter;
 
     filterButtons.forEach(btn => {
       btn.classList.toggle("active", btn.dataset.filter === filter);
     });
 
-    render();
+    renderTasks();
   }
 
-  // Add click events to filter buttons
+  // filter button clicks
   filterButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      setFilter(btn.dataset.filter);
+      setTaskFilter(btn.dataset.filter);
     });
   });
 
-  // Listen for hash changes in the URL (back/forward buttons)
+  // update filter if URL hash changes
   window.addEventListener("hashchange", () => {
     currentFilter = window.location.hash.replace("#", "") || "all";
-    setFilter(currentFilter);
+    setTaskFilter(currentFilter);
   });
 
-  // Handle drag & drop logic for todos and subtasks
-  function handleDrop(targetId) {
+  // handle drag & drop rearranging
+  function handleTaskDrop(targetId) {
     if (draggedId === targetId) return;
 
     const dragged = todos.find(t => t.id === draggedId);
     const target = todos.find(t => t.id === targetId);
     if (!dragged || !target) return;
 
-    // If dragging a subtask, reassign its parent
+    // if dragging a subtask, just change its parent
     if (dragged.parentId) {
       dragged.parentId = target.parentId || target.id;
     } else {
-      // Dragging a parent task
+      // moving a main task with its subtasks
       const children = todos.filter(t => t.parentId === dragged.id);
 
-      // Remove dragged task and its children temporarily
       todos = todos.filter(t => t.id !== dragged.id && t.parentId !== dragged.id);
 
-      // Insert dragged task (and children) before target
       const index = todos.findIndex(t => t.id === target.id);
       todos.splice(index, 0, dragged, ...children);
     }
 
-    saveTodos();
-    render();
+    saveTasks();
+    renderTasks();
   }
 
-  // Create a todo or subtask element in the DOM
-  function createTodoElement(todo, isSub = false) {
+  // build each task element
+  function createTaskElement(todo, isSub = false) {
     const li = document.createElement("li");
     li.classList.add("todo");
     if (isSub) li.classList.add("subtask");
@@ -124,63 +123,64 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Toggle completion when checkbox is clicked
+    // checkbox toggle
     li.querySelector("input").addEventListener("change", () => {
-      toggleComplete(todo.id);
+      toggleTask(todo.id);
     });
 
-    // Delete the todo when delete button is clicked
+    // delete button
     li.querySelector(".delete").addEventListener("click", () => {
-      deleteTodo(todo.id);
+      deleteTask(todo.id);
     });
 
-    // Add subtask when "+" button is clicked
+    // add subtask button
     if (!isSub) {
       li.querySelector(".subtask-btn").addEventListener("click", () => {
         const text = prompt("Subtask name?");
         if (text && text.trim()) {
-          addTodo(text.trim(), todo.id);
+          addTask(text.trim(), todo.id);
         }
       });
     }
 
-    // Drag events
+    // drag events
     li.addEventListener("dragstart", () => {
       draggedId = todo.id;
       li.classList.add("dragging");
     });
+
     li.addEventListener("dragend", () => {
       li.classList.remove("dragging");
     });
-    li.addEventListener("dragover", e => e.preventDefault()); // allow drop
-    li.addEventListener("drop", () => handleDrop(todo.id));
+
+    li.addEventListener("dragover", e => e.preventDefault());
+    li.addEventListener("drop", () => handleTaskDrop(todo.id));
 
     return li;
   }
 
-  // Render todos to the DOM
-  function render() {
+  // show tasks on screen
+  function renderTasks() {
     listEl.innerHTML = "";
 
-    // Filter todos based on current filter
     const filtered = todos.filter(t => {
       if (currentFilter === "active") return !t.completed;
       if (currentFilter === "completed") return t.completed;
-      return true; // show all
+      return true;
     });
 
-    // Render parent tasks first
+    // show main tasks first
     filtered.filter(t => !t.parentId).forEach(parent => {
-      listEl.appendChild(createTodoElement(parent));
+      listEl.appendChild(createTaskElement(parent));
 
-      // Render subtasks
+      // then show its subtasks
       filtered.filter(t => t.parentId === parent.id).forEach(child => {
-        listEl.appendChild(createTodoElement(child, true));
+        listEl.appendChild(createTaskElement(child, true));
       });
     });
   }
 
-  // Initialize the app
-  setFilter(currentFilter);
-  render();
+  // start app
+  setTaskFilter(currentFilter);
+  renderTasks();
 });
