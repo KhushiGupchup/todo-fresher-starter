@@ -29,6 +29,12 @@ How to Run
 
 Open index.html in a browser and start adding tasks.
 
+Challenges Faced
+
+Implementing 1-level nested drag & drop without breaking subtasks.
+
+Ensuring localStorage keeps subtasks connected to their parents.
+
 Lessons Learned
 
 Practiced DOM manipulation, event handling, drag & drop, and localStorage persistence.
