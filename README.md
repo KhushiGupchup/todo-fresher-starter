@@ -5,37 +5,37 @@
 ---
 
 📝 Nested Todo List (Vanilla JS)
-Overview
+**Overview**
 
 A responsive, single-page Todo App built with Vanilla JavaScript. Supports 1-level nested subtasks, drag & drop, filters (All / Active / Completed), and persistent storage with localStorage.
 
-Features
+**Features**
 
-Add main tasks and subtasks (+ button).
+1.Add main tasks and subtasks (+ button).
 
-Drag & drop tasks (parent moves with subtasks).
+2.Drag & drop tasks (parent moves with subtasks).
 
-Mark complete, delete tasks, and filter by status.
+3.Mark complete, delete tasks, and filter by status.
 
-Alerts and highlights for added/deleted tasks.
+4.Alerts and highlights for added/deleted tasks.
 
-Responsive design for desktop and mobile.
+5.Responsive design for desktop and mobile.
 
-Tech Stack
+**Tech Stack**
 
 HTML | CSS | JavaScript (Vanilla)
 
-How to Run
+**How to Run**
 
 Open index.html in a browser and start adding tasks.
 
-Challenges Faced
+**Challenges Faced**
 
-Implementing 1-level nested drag & drop without breaking subtasks.
+1.Implementing 1-level nested drag & drop without breaking subtasks.
 
-Ensuring localStorage keeps subtasks connected to their parents.
+2.Ensuring localStorage keeps subtasks connected to their parents.
 
-Lessons Learned
+**Lessons Learned**
 
 Practiced DOM manipulation, event handling, drag & drop, and localStorage persistence.
 
