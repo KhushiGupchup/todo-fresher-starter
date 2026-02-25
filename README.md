@@ -4,94 +4,35 @@
 
 ---
 
-# 📝 Todo App
+📝 Nested Todo List (Vanilla JS)
+Overview
 
-A responsive, single-page **Nested Todo App** built with vanilla JavaScript, featuring **1-level nesting**, **drag & drop**, **filters**, and **persistent storage**.
+A responsive, single-page Todo App built with Vanilla JavaScript. Supports 1-level nested subtasks, drag & drop, filters (All / Active / Completed), and persistent storage with localStorage.
 
----
+Features
 
-## 🎯 Overview
+Add main tasks and subtasks (+ button).
 
-This project allows users to manage tasks and subtasks in an intuitive interface.  
-You can add todos, nest subtasks, reorder items with drag-and-drop, and filter by completion status.  
-All data is saved in **localStorage** for persistence between sessions.
+Drag & drop tasks (parent moves with subtasks).
 
----
+Mark complete, delete tasks, and filter by status.
 
-### 🧰 Tech Stack
+Alerts and highlights for added/deleted tasks.
 
--   HTML
--   CSS
--   JavaScript (Vanilla)
+Responsive design for desktop and mobile.
 
-## 🚀 Core Requirements (Must-Have)
+Tech Stack
 
-### 1. Add Todos
+HTML | CSS | JavaScript (Vanilla)
 
--   Add **top-level todos** by typing into an input and pressing **Enter**.
--   Each todo has a button or icon to **add a sub-task** beneath it.
--   Sub-tasks are displayed visually indented below their parent.
-    Example
+How to Run
 
-```
--   Buy groceries
-    -   Buy milk
-    -   Buy eggs
--   Read a book
-    -   Chapter 1: Introduction
-```
+Open index.html in a browser and start adding tasks.
+
+Lessons Learned
+
+Practiced DOM manipulation, event handling, drag & drop, and localStorage persistence.
 
 ---
 
-### 2. Drag & Drop (1-Level Nested)
 
-Uses the **HTML5 Drag API** (`draggable`, `dragstart`, `dragover`, `drop`) to reorder tasks.
-
--   **Drag parent task:** Moves along with all its sub-tasks.
--   **Drag sub-task:** Can be dropped under a different parent or promoted to top-level.
--   **Visual indent:** Sub-tasks appear slightly indented for clarity.
-
----
-
-### 3. Mark Complete / Delete
-
--   Each todo has a **checkbox** to mark completion.
--   Completed tasks are shown with a **strikethrough**.
--   A **delete icon** removes a task (and its sub-tasks, if any).
-
----
-
-### 4. Filter Tabs
-
-Toggle between task views:
-
--   **All**
--   **Active**
--   **Completed**
-
-When filters are selected, the **URL hash** updates automatically:
-
--   `#all` → Show all tasks
--   `#active` → Show uncompleted tasks
--   `#completed` → Show completed tasks
-
----
-
-### 5. Persistence (Local Storage)
-
--   Todos are **saved to localStorage** on every change.
--   On refresh, data is automatically reloaded.
-
----
-
-### 6. Responsive Design
-
--   Works on both **desktop and mobile**.
--   Touch drag-and-drop is optional but considered a bonus.
-
----
-
-## 📦 Deliverables
-
--   **Live Demo:** Hosted on [Vercel](https://vercel.com) / [Netlify](https://www.netlify.com) / [Github Pages](https://github.com)
--   **GitHub Repository:** With clean, descriptive commit messages and organized code.
