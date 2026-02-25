@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
       completed: false,
       parentId
     });
+    console.log("task added:", text);
+    alert("Task added successfully!");
 
     saveTasks();
     renderTasks(); // refresh list
@@ -39,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // delete task and its subtasks
   function deleteTask(id) {
+     console.log("Deleting task with id:", id); // human touch
     todos = todos.filter(t => t.id !== id && t.parentId !== id);
     saveTasks();
     renderTasks();
@@ -118,8 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="row">
           <input type="checkbox" ${todo.completed ? "checked" : ""}>
           <span class="text">${todo.text}</span>
-          ${!isSub ? '<button class="subtask-btn">+</button>' : ""}
-          <button class="delete">x</button>
+          ${!isSub ? '<button class="subtask-btn">&#x2B;</button>' : ""}
+          <button class="delete">&#x2716;</button>
       </div>
     `;
 
@@ -136,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // add subtask button
     if (!isSub) {
       li.querySelector(".subtask-btn").addEventListener("click", () => {
-        const text = prompt("Subtask name?");
+        const text = prompt("Enter your other task in main task");
         if (text && text.trim()) {
           addTask(text.trim(), todo.id);
         }
